@@ -12,9 +12,11 @@
 		{{form.room.label}}: {{form.room()}} {% for error in form.room.errors %} {{error}} {% endfor %}
 		{{form.submit}}
 	</form>
-	{% for room in room_list %}
-		{{room}}
-	{% endfor %}
+	<ul>
+		{% for room in room_list %}
+			<li><a href=""></a>{{room}}</li>
+		{% endfor %}
+	</ul>
 {% endblock content %}
 {% block script %}
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
