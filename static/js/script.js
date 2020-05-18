@@ -1,19 +1,18 @@
 $(document).ready(function(){
 	var socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
 	console.log(socket);
+    var msg_history = document.getElementById('msg_history');
 	socket.on('connect', function(){
 		socket.emit('joined',{});
 	});
 
-	socket.on('status', function(data) {
-        $('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
-        $('#chat').scrollTop($('#chat')[0].scrollHeight);
-    });
+     socket.on('status', function(data) {
+        msg_history.innerHTML += data['msg'] + '<br />'
+     });
 
-    socket.on('message', function(data) {
-        $('#chat').val($('#chat').val() + data.msg + '  ' +moment(data.timestamp).format('MMMM Do YYYY, h:mm:ss a') +'\n');
-        $('#chat').scrollTop($('#chat')[0].scrollHeight);
-    });
+     socket.on('message', function(data) {
+        msg_history.innerHTML += data['msg'] + '<br />'
+     });
 
     $('#text').keypress(function(e) {
         var code = e.keyCode || e.which;

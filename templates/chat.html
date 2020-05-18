@@ -3,36 +3,26 @@
     Chat {{room}}
 {% endblock title %}
 {% block content %}
-    <h1>Room name: {{room}}</h1>
-    <textarea id="chat" cols="80" rows="20"></textarea>
-    <br><br>
-    <input id="text" size="80" placeholder="Enter you message here" required>
-    <a href="#" onclick="leave_room();">Leave this room</a>
     <div class="container">
+      <h1>Room name: {{room}}</h1>
       <div class="messaging">
         <div class="inbox_msg">
           <div class="mesgs">
-            <div class="msg_history">
-              <div class="incoming_msg">
-                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png"> </div>
-                <div class="received_msg">
-                  <div class="received_withd_msg">
-                    <p>Test which is a new approach to have all
-                      solutions</p>
-                    <span class="time_date"> 11:01 AM    |    June 9</span></div>
-                </div>
-              </div>
-              <div class="outgoing_msg">
-                <div class="sent_msg">
-                  <p>Test which is a new approach to have all
-                    solutions</p>
-                  <span class="time_date"> 11:01 AM    |    June 9</span> </div>
-              </div>
+            <div class="msg_history" id="msg_history">
             </div>
             <div class="type_msg">
               <div class="input_msg_write">
-                <input type="text" class="write_msg" placeholder="Type a message" />
-                <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                <div class="d-flex">
+                  <div class="col-md-8">
+                    <input id="text" type="text" class="write_msg" placeholder="Type a message" />
+                  </div>
+                  <div class="col-md-2">
+                    <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button> 
+                  </div>
+                  <div class="col-md-2">
+                    <a class="btn btn-warning pull-right" href="#" style="margin-top: 5px;" onclick="leave_room();">Leave this room</a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
