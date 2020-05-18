@@ -16,6 +16,7 @@ socketio = SocketIO(app)
 room_list = []
 user_list = []
 messages = []
+
 MESSAGE_LIMIT = 100
 
 
@@ -51,20 +52,26 @@ def joined(message):
     room = session.get('room')
     join_room(room)
     emit('status', {
-        'msg': session.get('name') + ' has entered the room.'
+        'msg': '{0} has entered the room.'.format(session.get('name'))
     }, room=room)
 
 
 @socketio.on('text', namespace='/chat')
 def text(message):
     room = session.get('room')
-    messages.append(message['msg'])
+    user = session.get('name')
     if len(messages) > MESSAGE_LIMIT:
         emit('message', {
-            'msg': 'You are only allowed to send {} messages a session'.format(
+            'msg': 'You are only allowed to send {0} messages a session'.format(
                 MESSAGE_LIMIT)
         })
     else:
+        context = {
+            'msg': message['msg'],
+            'user': session.get('name'),
+            'timestamp': datetime.now()
+        }
+        messages.append(context)
         emit('message', {
             'msg': '{0}: {1}'.format(session.get('name'), message['msg']),
             'timestamp': '{0}'.format(datetime.now())
