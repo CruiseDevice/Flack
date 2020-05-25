@@ -73,7 +73,8 @@ def text(message):
         }
         messages.append(context)
         emit('message', {
-            'msg': '{0}: {1}'.format(session.get('name'), message['msg']),
+            'msg': message['msg'],
+            'user': session.get('name'),
             'timestamp': '{0}'.format(datetime.now())
         }, room=room)
 
