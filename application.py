@@ -17,7 +17,7 @@ user_list = []
 messages = []
 
 MESSAGE_LIMIT = 100
-MSG_COUNT = 0
+msg_count = 0
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -66,10 +66,10 @@ def text(message):
         'timestamp': datetime.now()
     }
     messages.append(context)
-    for d in messages:
-        if user == d['user']:
-            MSG_COUNT += 1
-    if MSG_COUNT > MESSAGE_LIMIT:
+    for message in messages:
+        if user == message['user']:
+            msg_count += 1
+    if msg_count > MESSAGE_LIMIT:
         emit('message', {
             'msg': 'You are only allowed to send {0} messages a session'.format(
                 MESSAGE_LIMIT
@@ -87,7 +87,7 @@ def text(message):
 def left(message):
     room = session.get('room')
     messages = []
-    MSG_COUNT = 0
+    msg_count = 0
     leave_room(room)
     emit('status', {
         'msg': session.get('name') + ' has left the room.'
