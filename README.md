@@ -8,4 +8,4 @@ An online messaging service using Flask
 - [x] Messages view
 - [x] Sending messages
 - [ ] Remembering the channel
-- [ ] Personal touch
+- [x] Personal touch

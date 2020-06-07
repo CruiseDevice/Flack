@@ -4,7 +4,6 @@ from datetime import datetime
 from flask import Flask, render_template, redirect, url_for, request, session
 from flask_socketio import SocketIO, emit, join_room, leave_room
 
-
 from forms import LoginForm
 
 from credentials import SECRET_KEY
@@ -18,6 +17,7 @@ user_list = []
 messages = []
 
 MESSAGE_LIMIT = 100
+msg_count = 0
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -60,20 +60,25 @@ def joined(message):
 def text(message):
     room = session.get('room')
     user = session.get('name')
-    if len(messages) > MESSAGE_LIMIT:
+    context = {
+        'msg': message['msg'],
+        'user': session.get('name'),
+        'timestamp': datetime.now()
+    }
+    messages.append(context)
+    for message in messages:
+        if user == message['user']:
+            msg_count += 1
+    if msg_count > MESSAGE_LIMIT:
         emit('message', {
             'msg': 'You are only allowed to send {0} messages a session'.format(
-                MESSAGE_LIMIT)
+                MESSAGE_LIMIT
+            )
         })
     else:
-        context = {
+        emit('message', {
             'msg': message['msg'],
             'user': session.get('name'),
-            'timestamp': datetime.now()
-        }
-        messages.append(context)
-        emit('message', {
-            'msg': '{0}: {1}'.format(session.get('name'), message['msg']),
             'timestamp': '{0}'.format(datetime.now())
         }, room=room)
 
@@ -81,6 +86,8 @@ def text(message):
 @socketio.on('left', namespace='/chat')
 def left(message):
     room = session.get('room')
+    messages = []
+    msg_count = 0
     leave_room(room)
     emit('status', {
         'msg': session.get('name') + ' has left the room.'
